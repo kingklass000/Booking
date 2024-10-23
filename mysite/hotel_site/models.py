@@ -86,4 +86,102 @@ class Review(models.Model):
 
 
 
+class Booking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    total_price = models.PositiveIntegerField(default=0)
+    STATUS_CHOICES = (
+        ('Бронь', 'Бронь'),
+        ('Свободный', 'Свободный'),
+        ('Занят', 'Занят')
+    )
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES)
+
+    class Meta:
+        unique_together = ('room', 'check_in_date', 'check_out_date')
+
+    def __str__(self):
+        return f'{self.room} from {self.check_in_date} to {self.check_out_date}'
+
+    class Room:
+        def __init__(self, room_number):
+            self.room_number = room_number
+            self.status = 'available'
+
+        def update_status(self, new_status):
+            self.status = new_status
+            print(f"Статус номера {self.room_number} обновлён на {self.status}")
+
+    class Booking:
+        def __init__(self, room):
+            self.room = room
+
+        def create_booking(self):
+            if self.room.status == 'available':
+                self.room.update_status('booked')
+                print(f"Бронирование номера {self.room.room_number} создано.")
+            else:
+                print(f"Номер {self.room.room_number} уже забронирован.")
+
+        def cancel_booking(self):
+            if self.room.status == 'booked':
+                self.room.update_status('available')
+                print(f"Бронирование номера {self.room.room_number} отменено.")
+            else:
+                print(f"Номер {self.room.room_number} не забронирован.")
+
+
+
+class Booking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    total_price = models.PositiveIntegerField(default=0)
+    STATUS_CHOICES = (
+        ('Бронь', 'Бронь'),
+        ('Свободный', 'Свободный'),
+        ('Занят', 'Занят')
+    )
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES)
+
+    class Meta:
+        unique_together = ('room', 'check_in_date', 'check_out_date')
+
+    def __str__(self):
+        return f'{self.room} from {self.check_in_date} to {self.check_out_date}'
+
+    class Room:
+        def __init__(self, room_number):
+            self.room_number = room_number
+            self.status = 'available'
+
+        def update_status(self, new_status):
+            self.status = new_status
+            print(f"Статус номера {self.room_number} обновлён на {self.status}")
+
+    class Booking:
+        def __init__(self, room):
+            self.room = room
+
+        def create_booking(self):
+            if self.room.status == 'available':
+                self.room.update_status('booked')
+                print(f"Бронирование номера {self.room.room_number} создано.")
+            else:
+                print(f"Номер {self.room.room_number} уже забронирован.")
+
+        def cancel_booking(self):
+            if self.room.status == 'booked':
+                self.room.update_status('available')
+                print(f"Бронирование номера {self.room.room_number} отменено.")
+            else:
+                print(f"Номер {self.room.room_number} не забронирован.")
+
+
+
 
