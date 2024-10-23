@@ -6,6 +6,7 @@ class HotelPhotosInline(admin.TabularInline):
     model = HotelPhotos
     extra = 1
 
+
 class HotelAdmin(admin.ModelAdmin):
     inlines = [HotelPhotosInline]
 
