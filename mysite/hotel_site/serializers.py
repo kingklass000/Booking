@@ -62,6 +62,12 @@ class HotelPhotosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
@@ -111,6 +117,12 @@ class HotelDetailSerializer(serializers.ModelSerializer):
     ratings = RatingSerializer(many=True, read_only=True)
     owner =  UserListSerializer()
     average_rating = serializers.SerializerMethodField()
+
+    def create(self, validated_data):
+        booking = Booking(**validated_data)
+        booking.full_clean()
+        booking.save()
+        return booking
 
     class Meta:
         model = Hotel
